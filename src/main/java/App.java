@@ -45,7 +45,7 @@ public class App {
         try {
             if (System.getenv("DATABASE_URL") == null) {
                 dbUri = new URI("postgres://localhost:4567/wildlife_tracker");
-                sql2o = new Sql2o(connectionStr,"pkminor","password");
+                sql2o = new Sql2o(connectionStr,"mburiah","password");
 
             } else {
 
