@@ -45,7 +45,7 @@ public class App {
         try {
             if (System.getenv("DATABASE_URL") == null) {
                 dbUri = new URI("postgres://localhost:4567/wildlife_tracker");
-                sql2o = new Sql2o(connectionStr,"mburiah","password");
+                sql2o = new Sql2o(connectionStr,"postgres","password");
 
             } else {
 
@@ -67,6 +67,12 @@ public class App {
         endangeredAnimalDao =  new Sql2oEndangeredAnimalDao(sql2o);
 
         staticFileLocation("/public");
+//        String connectionString = "jdbc:h2:~/wildlife_tracker.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
+//        Sql2o sql2o = new Sql2o(connectionString, "mburiah", "passwword");
+//        Sql2oAnimalDao animalDao= new Sql2oAnimalDao(sql2o);
+//        Sql2oEndangeredAnimalDao endangeredDao= new Sql2oEndangeredAnimalDao(sql2o);
+//        Sql2oSightingDao sightingDao=new Sql2oSightingDao(sql2o);
+
 
         get("/", (req,res)->index(req), new HandlebarsTemplateEngine());
         get("/sighted",(req,res)->index(req), new HandlebarsTemplateEngine());
@@ -207,7 +213,7 @@ public class App {
 
     }
 
-    // helper for: /endangered, /endangered/sighted, /endangered/unsighted
+    // helper class for: /endangered, /endangered/sighted, /endangered/unsighted
     private static  ModelAndView endangered(Request req, Response res){
 
         updateCategoryRoutes(req); //for updating session categoryRoutes
@@ -311,4 +317,5 @@ public class App {
             this.active = active;
         }
     }
+    Sql2oAnimalDao dbConnection = new Sql2oAnimalDao(new Sql2o(""));
 }

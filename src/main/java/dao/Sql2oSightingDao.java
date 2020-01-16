@@ -81,13 +81,6 @@ public class Sql2oSightingDao implements SightingDao {
                 .map(s -> animalDao.findAnimalById(s.getAid()))
                 .collect(Collectors.toList());
 
-        //all animals, filter to retain those in sightedAnimals
-        //BAD MOVE - recursive call
-        /*return animalDao.getAllAnimals().stream()
-                .filter(a-> getSightedAnimals().contains(a))
-                .collect(Collectors.toList());
-
-         */
     }
 
     @Override
@@ -108,13 +101,6 @@ public class Sql2oSightingDao implements SightingDao {
                 .map(s -> endangeredAnimalDao.findEndangeredAnimalById(s.getAid()))
                 .collect(Collectors.toList());
 
-        //all endangered animals, filter to retain those in sightedEndangeredAnimals
-        //BAD MOVE - recursive call
-        /*return endangeredAnimalDao.getAllEndangeredAnimals().stream()
-                .filter(a-> getSightedEndangeredAnimals().contains(a))
-                .collect(Collectors.toList());
-
-         */
     }
 
     @Override

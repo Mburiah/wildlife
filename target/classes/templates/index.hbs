@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WildLife Tracker</title>
+    
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    {{#partial "style"}}
+        <style>
+            .left { width:20%;position:fixed;top:0;left:0;height:100%;overflow:auto;background-color: peru; }
+            .right { width:10%;position:fixed;top:0;right:0;height:100%;overflow:auto;background-color: peru; }
+            .content { width:70%;margin:0 10% 0 20%; }
+            body { background-color: #EBEFF2; user-select:none;font-family: Helvetica, sans-serif; }
+            .vr-round {font-family: 'cursive', sans-serif;}
+            li {list-style-type: none;}
+            a:hover{text-decoration: none;}
+            @media screen and (max-width:500px){ .content{width:100%} .left, .right {display:none;} }
+
+            /* width */
+            ::-webkit-scrollbar {  width: 5px;}
+            /* Track */
+            ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px yellow;
+            border-radius: 10px;
+            }
+
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                background: #5cb85c;
+                border-radius: 10px;
+            }
+
+             /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {   background: #5cb85c; }
+        </style>
+    {{/partial}}
+</head>
+<body>
+
+  <div class="left">
+      <div class="shadow vr-round bg-dark text-white font-weight-bolder p-3 mb-1 sticky-top">Categories</div>
+
+      <div class="px-2 pt-3">
+        <ul>       
+            {{#each routes}}
+              <li class="p-1 mb-1"> <a href="{{url}}" class="text-dark font-weight-bolder">
+                  {{#if active}}
+                    <span class="badge badge-pill badge-success p-2">{{label}}</span>
+                  {{else}}
+                    <span class="badge badge-pill badge-light p-2">{{label}}</span>                   
+                  {{/if}}
+              </a></li>
+            {{/each}}
+      </ul>
+      </div>
+      
+      
+  </div><!-- End Left-->
+
+  <div class="content">
+    <div class="shadow p-3 sticky-top font-weight-bolder bg-dark text-white vr-round">
+      WildLife Tracker
+    </div>
+
+    <div class="container pt-3">
+        <div class="row">
+            <div class="col-6">
+                <form action="/animals/new" method="POST">
+                  <div class="row m-1">
+                  <div class="input-group">
+                      <input type="text" name="animal" id="animal" class="form-control border-0" placeholder="Type animal....">
+                      <div class="input-group-append">
+                          <div class="input-group-text bg-dark">
+                              <div class="custom-control custom-checkbox">
+                              <input type="checkbox" value="endangered" class="custom-control-input border-0" id="endangered" name="endangered">
+                              <label class="custom-control-label text-white font-weight-bolder" for="endangered">Endangered Animal?</label>
+                              </div>
+                          </div>
+                      </div>                      
+                  </div>                 
+                  </div>
+
+                  <div class="row m-1">                      
+                          <div class="input-group" id="health-group">
+                              <div class="input-group-prepend">
+                                  <button class="btn btn-success font-weight-bolder text-white">Health</button>
+                              </div>
+                              <select name="health" id="health" class="form-control border-0">
+                                  <option value="healthy">Healthy</option>
+                                  <option value="okay">Okay</option>
+                                  <option value="ill">Ill</option>
+                              </select>
+                          </div>
+                  </div>
+
+                  <div class="row m-1">
+                          <div class="input-group" id="age-group">
+                              <div class="input-group-prepend">
+                                  <button class="btn btn-success text-white font-weight-bolder">Age</button>
+                              </div>
+                              <select name="age" id="age" class="form-control border-0">
+                                  <option value="newborn">Newborn</option>
+                                  <option value="young">Young</option>
+                                  <option value="adult">Adult</option>
+                              </select>
+                          </div>
+                  </div>                  
+
+                  <div class="row m-1">
+                      <button type="submit" id="submit" class="btn btn-success btn-block text-weight font-weight-bolder p-2">Add Animal</button>
+                  </div>
+                </form> <!-- End Animal Form-->
+            </div>
+           
+            <div class="col-6">
+                <form action="/sightings/new" method="POST">                  
+
+                  <div class="row m-1">                      
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                  <button class="btn btn-success font-weight-bolder text-white">Animal</button>
+                              </div>
+                              <select name="animal" id="animal" class="form-control border-0">
+                                  {{#each wildlife}}
+                                     <option value="{{id}}">{{id}} - {{name}}</option> 
+                                  {{/each}}                                 
+                              </select>
+                          </div>
+                  </div>
+
+                  <div class="row m-1">
+                       <input type="text" name="location" id="location" class="form-control border-0" placeholder="Type location....">
+                  </div>     
+
+                  <div class="row m-1">                 
+                      <input type="text" name="rangername" id="rangername" class="form-control border-0" placeholder="Type ranger name....">
+                  </div>             
+
+                  <div class="row m-1">
+                      <button type="submit" class="btn btn-success btn-block text-weight font-weight-bolder p-2">Add Sighting</button>
+                  </div>
+                </form> <!-- End Sighting Form-->
+            </div>
+        </div><!-- End Forms Row-->
+
+        <hr>
+
+        {{#if data}}
+           {{#each data}}
+           <div class="shadow bg-white mb-2 p-2">               
+               <div class="card-title"><span class="badge  text-white p-2 badge-dark">Animal ID {{id}}</span></div>
+               <div class="card-text">{{name}}</div>
+               <hr>
+               <div class="card-text"><span class="badge badge-pill text-white p-2 badge-info">{{type}}</span></div>               
+           </div>
+        {{/each}}
+        {{else}}
+        {{#each sightings}}
+           <div class="shadow bg-white mb-2 p-2">
+               <div class="card-title"><span class="badge text-white p-2 badge-dark">Sighting ID {{id}}</span></div>
+               <div class="card-text">Animal ID {{aid}} </div>
+               <div class="card-text">Spotted at {{location}} by {{rangername}}</div>
+               <div class="card-footer">On {{sightdate}}</div>                
+           </div>
+        {{/each}}
+        {{/if}}
+    </div><!-- End Content Container-->
+
+  </div><!-- End Content-->
+
+  <div class="right">
+
+  </div><!-- End Right-->
+
+  <script>
+      $(function(){
+          $("#health-group").hide();
+          $("#age-group").hide();
+
+          $("#endangered").change(function(){
+              
+              if( $(this).is(':checked')){
+                  $("#health-group").show();
+                  $("#age-group").show();
+                  $("#submit").html('Add Endangered Animal');
+              }else{
+                  $("#health-group").hide();
+                  $("#age-group").hide();
+                  $("#submit").html('Add Animal');
+              }
+          });
+      });
+  </script>
+</body>
+</html>
