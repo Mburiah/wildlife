@@ -40,7 +40,7 @@ public class App {
 
         port(port);
 
-        String connectionStr="jdbc:postgresql://localhost:4567/wildlife_tracker";
+        String connectionStr="jdbc:postgresql://localhost:5432/wildlife_tracker";
 
         try {
             if (System.getenv("DATABASE_URL") == null) {
@@ -67,11 +67,11 @@ public class App {
         endangeredAnimalDao =  new Sql2oEndangeredAnimalDao(sql2o);
 
         staticFileLocation("/public");
-//        String connectionString = "jdbc:h2:~/wildlife_tracker.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
-//        Sql2o sql2o = new Sql2o(connectionString, "mburiah", "passwword");
-//        Sql2oAnimalDao animalDao= new Sql2oAnimalDao(sql2o);
-//        Sql2oEndangeredAnimalDao endangeredDao= new Sql2oEndangeredAnimalDao(sql2o);
-//        Sql2oSightingDao sightingDao=new Sql2oSightingDao(sql2o);
+        String connectionString = "jdbc:h2:~/wildlife_tracker.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
+        Sql2o sql2o = new Sql2o(connectionString, "postgres", "passwword");
+        Sql2oAnimalDao animalDao= new Sql2oAnimalDao(sql2o);
+        Sql2oEndangeredAnimalDao endangeredDao= new Sql2oEndangeredAnimalDao(sql2o);
+        Sql2oSightingDao sightingDao=new Sql2oSightingDao(sql2o);
 
 
         get("/", (req,res)->index(req), new HandlebarsTemplateEngine());
@@ -317,5 +317,4 @@ public class App {
             this.active = active;
         }
     }
-    Sql2oAnimalDao dbConnection = new Sql2oAnimalDao(new Sql2o(""));
 }
